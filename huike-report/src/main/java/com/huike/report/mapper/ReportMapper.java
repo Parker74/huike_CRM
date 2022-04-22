@@ -2,6 +2,7 @@ package com.huike.report.mapper;
 
 import java.util.Map;
 
+import com.huike.common.core.domain.AjaxResult;
 import org.apache.ibatis.annotations.Param;
 
 import com.huike.clues.domain.vo.IndexStatisticsVo;
@@ -20,7 +21,7 @@ public interface ReportMapper {
 	 * @param username			用户名
 	 * @return
 	 */
-    Integer getCluesNum(@Param("startTime") String beginCreateTime,
+	Integer getCluesNum(@Param("startTime") String beginCreateTime,
 						@Param("endTime") String endCreateTime,
 						@Param("username") String username);
 
@@ -57,7 +58,24 @@ public interface ReportMapper {
 						  @Param("endTime") String endCreateTime,
 						  @Param("username") String username);
 
+	/**
+	 * 获取今日线索数量
+	 * @param username
+	 * @param today
+	 * @return
+	 */
+	Integer getTodayCluesNum(@Param("username") String username, @Param("now()") String today);
+
+
+
+	Integer getfollowedCluesNum(@Param("username") String userName,@Param("beginCreateTime") String beginCreateTime, @Param("endCreateTime")String endCreateTime);
+
+	Integer getfollowedBusinessNum(@Param("username") String userName,@Param("beginCreateTime") String beginCreateTime, @Param("endCreateTime")String endCreateTime);
+
+
 	/**=========================================今日简报========================================*/
+
+
 
 	/**=========================================待办========================================*/
 

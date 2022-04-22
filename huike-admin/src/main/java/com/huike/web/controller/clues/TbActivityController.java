@@ -1,5 +1,8 @@
 package com.huike.web.controller.clues;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,12 +28,13 @@ import com.huike.common.enums.BusinessType;
 /**
  * 活动管理Controller
  * 
- * @author ruoyi
+ * @author wgl
  * @date 2021-04-01
  */
 @RestController
 @RequestMapping("/clues/activity")
 public class TbActivityController extends BaseController {
+
     @Autowired
     private ITbActivityService tbActivityService;
 
@@ -39,7 +43,8 @@ public class TbActivityController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('clues:activity:list')")
     @GetMapping("/list")
-    public TableDataInfo list(TbActivity tbActivity) {
+    public TableDataInfo list(TbActivity tbActivity)
+    {
         startPage();
         List<TbActivity> list = tbActivityService.selectTbActivityList(tbActivity);
         Map<String,Object> countParms=tbActivityService.getCountByStatus();
@@ -57,6 +62,11 @@ public class TbActivityController extends BaseController {
         TbActivity tbActivity =new TbActivity();
         tbActivity.setChannel(channel);
         tbActivity.setStatus("2");
+        tbActivity.setParams(new HashMap(){
+            {
+                put("now",new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            }
+        });
         return AjaxResult.success(tbActivityService.selectTbActivityList(tbActivity));
     }
 

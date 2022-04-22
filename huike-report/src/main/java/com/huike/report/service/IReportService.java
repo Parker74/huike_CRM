@@ -3,6 +3,7 @@ package com.huike.report.service;
 import java.util.List;
 import java.util.Map;
 
+import com.huike.common.core.domain.AjaxResult;
 import com.huike.report.domain.vo.*;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,6 +14,14 @@ import com.huike.contract.domain.TbContract;
 
 public interface IReportService {
 
+    /**
+     *新增客户统计
+     * @param beginCreateTime
+     * @param endCreateTime
+     * @return
+     */
+    public LineChartVO contractStatistics(String beginCreateTime, String endCreateTime);
+
 
     /**
      * 客户统计报表
@@ -20,6 +29,14 @@ public interface IReportService {
      * @return
      */
     public  List<TbContract> contractReportList(TbContract tbContract);
+
+    /**
+     * 销售统计
+     * @param beginCreateTime
+     * @param endCreateTime
+     * @return
+     */
+    public LineChartVO salesStatistics(String beginCreateTime, String endCreateTime);
 
 
 
@@ -77,8 +94,10 @@ public interface IReportService {
     public List<ActivityStatisticsVo> activityStatisticsList(TbActivity activity);
 
 
-
     public IndexVo getIndex(IndexStatisticsVo request);
+
+
+    public List<Map<String,Object>> salesStatisticsForIndex(IndexStatisticsVo request);
 
 
     /**
@@ -89,5 +108,9 @@ public interface IReportService {
      */
     IndexBaseInfoVO getBaseInfo(String beginCreateTime, String endCreateTime);
 
+
+    IndexTodayInfoVO getTodayCluesNum(String today);
+
+    IndexTodoInfoVO getTodoInfo(String beginCreateTime, String endCreateTime);
 
 }
