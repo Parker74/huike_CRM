@@ -138,7 +138,4 @@ public class TbBusinessController extends BaseController {
     public AjaxResult gain(@RequestBody AssignmentVo assignmentVo) {
         return AjaxResult.success(tbBusinessService.gain(assignmentVo.getIds(),assignmentVo.getUserId()));
     }
-
-
-
 }

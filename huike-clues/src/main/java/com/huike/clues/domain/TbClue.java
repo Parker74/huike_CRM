@@ -408,9 +408,6 @@ public class TbClue extends BaseEntity {
             return dictType;
         }
     }
-
-
-
 }
 
 

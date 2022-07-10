@@ -3,9 +3,8 @@ package com.huike.report.service;
 import java.util.List;
 import java.util.Map;
 
-import com.huike.common.core.domain.AjaxResult;
+import com.huike.clues.domain.vo.PieChartVO;
 import com.huike.report.domain.vo.*;
-import org.apache.ibatis.annotations.Param;
 
 import com.huike.clues.domain.TbActivity;
 import com.huike.clues.domain.TbClue;
@@ -109,8 +108,10 @@ public interface IReportService {
     IndexBaseInfoVO getBaseInfo(String beginCreateTime, String endCreateTime);
 
 
-    IndexTodayInfoVO getTodayCluesNum(String today);
+    IndexTodayInfoVO getTodayInfo(String today);
 
     IndexTodoInfoVO getTodoInfo(String beginCreateTime, String endCreateTime);
 
+
+    List<PieChartVO> subjectStatistics(String beginCreateTime, String endCreateTime);
 }

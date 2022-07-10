@@ -36,12 +36,23 @@ public class IndexController {
         return AjaxResult.success(reportService.getBaseInfo(beginCreateTime, endCreateTime));
     }
 
+    /**
+     * 首页查询
+     * @return
+     */
     @GetMapping("/getTodayInfo")
-    public AjaxResult getTodayCluesNum() {
+    public AjaxResult getTodayInfo() {
         String today = new SimpleDateFormat(("yyyy-MM-dd")).format(new Date());
-        IndexTodayInfoVO todayCluesNum = reportService.getTodayCluesNum(today);
-        return AjaxResult.success(todayCluesNum);
+        IndexTodayInfoVO todayInfo = reportService.getTodayInfo(today);
+        return AjaxResult.success(todayInfo);
     }
+
+    /**
+     * 首页待办事项查询
+     * @param beginCreateTime
+     * @param endCreateTime
+     * @return
+     */
     @GetMapping("/getTodoInfo")
     public AjaxResult getTodoInfo(@RequestParam("beginCreateTime") String beginCreateTime, @RequestParam("endCreateTime") String endCreateTime) {
         IndexTodoInfoVO result = reportService.getTodoInfo(beginCreateTime, endCreateTime);

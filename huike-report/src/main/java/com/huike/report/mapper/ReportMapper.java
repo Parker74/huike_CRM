@@ -1,11 +1,9 @@
 package com.huike.report.mapper;
 
-import java.util.Map;
-
-import com.huike.common.core.domain.AjaxResult;
+import com.huike.clues.domain.vo.PieChartVO;
 import org.apache.ibatis.annotations.Param;
 
-import com.huike.clues.domain.vo.IndexStatisticsVo;
+import java.util.List;
 
 /**
  * 首页统计分析的Mapper
@@ -67,16 +65,73 @@ public interface ReportMapper {
 	Integer getTodayCluesNum(@Param("username") String username, @Param("now()") String today);
 
 
+	/**
+	 * 查询今日新增合同数量
+	 * @param username
+	 * @param today
+	 * @return
+	 */
+	Integer getTodayContracNum(@Param("username") String username, @Param("now()") String today);
 
+	/**
+	 * 获取今日新增商机数量
+	 * @param username
+	 * @param today
+	 * @return
+	 */
+	Integer getTodayBusinessNum(@Param("username") String username, @Param("now()") String today);
+
+
+	/**
+	 * 查询今日合同成交金额
+	 * @param username
+	 * @param today
+	 * @return
+	 */
+	Double getTodaySalesAmount(@Param("username") String username, @Param("now()") String today);
+
+	/**
+	 * 获取待跟进线索数量
+	 * @param userName
+	 * @param beginCreateTime
+	 * @param endCreateTime
+	 * @return
+	 */
 	Integer getfollowedCluesNum(@Param("username") String userName,@Param("beginCreateTime") String beginCreateTime, @Param("endCreateTime")String endCreateTime);
 
+
+	/**
+	 * 获取待跟进商机数量
+	 * @param userName
+	 * @param beginCreateTime
+	 * @param endCreateTime
+	 * @return
+	 */
 	Integer getfollowedBusinessNum(@Param("username") String userName,@Param("beginCreateTime") String beginCreateTime, @Param("endCreateTime")String endCreateTime);
 
+	/**
+	 * 获取未分配线索数量
+	 * @param userName
+	 * @param beginCreateTime
+	 * @param endCreateTime
+	 * @return
+	 */
+	Integer getToallocatedCluesNum(@Param("username") String userName,@Param("beginCreateTime") String beginCreateTime, @Param("endCreateTime")String endCreateTime);
 
-	/**=========================================今日简报========================================*/
+	/**
+	 * 获取未分配商机数量
+	 * @param userName
+	 * @param beginCreateTime
+	 * @param endCreateTime
+	 * @return
+	 */
+	Integer getToallocatedBusinessNum(@Param("username") String userName,@Param("beginCreateTime") String beginCreateTime, @Param("endCreateTime")String endCreateTime);
 
-
-
-	/**=========================================待办========================================*/
-
+	/**
+	 * 饼状图
+	 * @param beginCreateTime
+	 * @param endCreateTime
+	 * @return
+	 */
+    List<PieChartVO> subjectStatistics(@Param("beginCreateTime") String beginCreateTime, @Param("endCreateTime") String endCreateTime);
 }

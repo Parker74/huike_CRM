@@ -3,6 +3,7 @@ package com.huike.web.controller.report;
 import java.util.List;
 import java.util.Map;
 
+import com.huike.clues.domain.vo.PieChartVO;
 import com.huike.report.domain.vo.LineChartVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -148,5 +149,14 @@ public class ReportController extends BaseController {
         return getDataTablePage(list);
     }
 
-
+    /**
+     * 饼状图分析
+     * @param beginCreateTime
+     * @param endCreateTime
+     * @return
+     */
+    @GetMapping("/subjectStatistics/{beginCreateTime}/{endCreateTime}")
+    public AjaxResult subjectStatistics(@PathVariable String beginCreateTime, @PathVariable String endCreateTime){
+        return AjaxResult.success(reportService.subjectStatistics(beginCreateTime, endCreateTime));
+    }
 }

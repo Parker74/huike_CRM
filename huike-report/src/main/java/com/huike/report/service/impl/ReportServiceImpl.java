@@ -6,13 +6,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 
-import com.huike.common.core.domain.AjaxResult;
+import com.huike.clues.domain.vo.PieChartVO;
 import com.huike.report.domain.vo.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -373,22 +371,55 @@ public class ReportServiceImpl implements IReportService {
         return result;
     }
 
+    /**
+     * 首页查询今日新增
+     *
+     * @param today
+     * @return
+     */
     @Override
-    public IndexTodayInfoVO getTodayCluesNum(String today) {
+    public IndexTodayInfoVO getTodayInfo(String today) {
         IndexTodayInfoVO result = new IndexTodayInfoVO();
         String username = SecurityUtils.getUsername();
         result.setTodayCluesNum(reportMpper.getTodayCluesNum(username, today));
+        result.setTodayBusinessNum(reportMpper.getTodayBusinessNum(username, today));
+        result.setTodayContractNum(reportMpper.getTodayContracNum(username, today));
+        result.setTodaySalesAmount(reportMpper.getTodaySalesAmount(username, today));
         return result;
     }
 
+    /**
+     * 首页代办事项
+     *
+     * @param beginCreateTime
+     * @param endCreateTime
+     * @return
+     */
     @Override
     public IndexTodoInfoVO getTodoInfo(String beginCreateTime, String endCreateTime) {
         IndexTodoInfoVO result = new IndexTodoInfoVO();
         String username = SecurityUtils.getUsername();
-        Integer CluesNum = reportMpper.getfollowedCluesNum(username,beginCreateTime, endCreateTime);
-        Integer BusinessNum = reportMpper.getfollowedBusinessNum(username, beginCreateTime, endCreateTime);
-        result.setTofollowedCluesNum(CluesNum);
-        result.setTofollowedCluesNum(BusinessNum);
+        result.setTofollowedCluesNum(reportMpper.getfollowedCluesNum(username, beginCreateTime, endCreateTime));
+        result.setTofollowedBusinessNum(reportMpper.getfollowedBusinessNum(username, beginCreateTime, endCreateTime));
+        result.setToallocatedCluesNum(reportMpper.getToallocatedCluesNum(username, beginCreateTime, endCreateTime));
+        result.setToallocatedBusinessNum(reportMpper.getToallocatedBusinessNum(username, beginCreateTime, endCreateTime));
         return result;
+    }
+
+    /**
+     * 饼状图分析
+     * @param beginCreateTime
+     * @param endCreateTime
+     * @return
+     */
+    @Override
+    public List<PieChartVO> subjectStatistics(String beginCreateTime, String endCreateTime) {
+        List<PieChartVO> list = reportMpper.subjectStatistics(beginCreateTime, endCreateTime);
+        for (PieChartVO pieChartVO : list) {
+            String subjectValue = pieChartVO.getSubject();
+            String label = sysDictDataMapper.selectDictLabel("course_subject", subjectValue);
+            pieChartVO.setSubject(label);
+        }
+        return list;
     }
 }

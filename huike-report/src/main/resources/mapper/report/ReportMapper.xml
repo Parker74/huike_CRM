@@ -50,7 +50,7 @@
     </select>
 
 
-    <!--获取今日线索数量-->
+    <!--获取今日新增线索数量-->
     <select id="getTodayCluesNum" resultType="java.lang.Integer">
         select count(*)
         from tb_clue
@@ -59,8 +59,21 @@
                      where user_name = #{username}
                        and latest = 1
                        and type = 0
-                       and create_time = #{now()})
+                       and DATE_FORMAT(create_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d'))
     </select>
+
+    <!--查询今日新增商机数量-->
+    <select id="getTodayBusinessNum" resultType="java.lang.Integer">
+        select count(*)
+        from tb_business
+        where id in (select assign_id
+                     from tb_assign_record
+                     where user_name = #{username}
+                       and latest = 1
+                       and type = 1
+                       and DATE_FORMAT(create_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d'))
+    </select>
+
 
     <!--查询待跟进线索-->
     <select id="getfollowedCluesNum" resultType="java.lang.Integer">
@@ -86,7 +99,50 @@
                        and type = 1
                        and latest = 1
                        and create_time between #{beginCreateTime} and #{endCreateTime})
-        and status = 1;
+          and status = 1;
     </select>
 
+    <!--查询今日新增合同数量-->
+    <select id="getTodayContracNum" resultType="java.lang.Integer">
+        select count(*)
+        from tb_contract
+        where create_by = #{username}
+          and DATE_FORMAT(create_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d')
+    </select>
+
+    <!--查询今日销售额-->
+    <select id="getTodaySalesAmount" resultType="java.lang.Double">
+        select ifnull(sum(course_price), 0)
+        from tb_contract
+        where create_by = #{username}
+          and DATE_FORMAT(create_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d')
+    </select>
+
+    <!--待分配的线索数-->
+    <select id="getToallocatedCluesNum" resultType="java.lang.Integer">
+        SELECT COUNT(DISTINCT (id)) AS toallocatedCluesNum
+        FROM `tb_clue`
+        WHERE id NOT IN (SELECT assign_id
+                         FROM `tb_assign_record`
+                         WHERE latest = 1
+                           AND type = 0)
+          AND create_by = #{username}
+          AND create_time BETWEEN #{beginCreateTime} AND #{endCreateTime}
+    </select>
+
+    <!--待分配的商机数-->
+    <select id="getToallocatedBusinessNum" resultType="java.lang.Integer">
+        select count(*)
+        from tb_business
+        where id not in (select assign_id from tb_assign_record where latest = 1 and type = 1)
+          and create_by = #{username}
+          and create_time between #{beginCreateTime} AND #{endCreateTime}
+    </select>
+
+    <!--饼状图分析-->
+    <select id="subjectStatistics" resultType="com.huike.clues.domain.vo.PieChartVO">
+        select subject as subject, count(*) as sum
+        from tb_contract
+        group by subject;
+    </select>
 </mapper>
